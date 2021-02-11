@@ -1,0 +1,72 @@
+알고리즘 : 선행스킬 목록에 있는 스킬들 순서대로 배워야함        (skill)        
+         => 첫번째스킬은 무조건 들어가야함                ex)  "ABCD"  =>   "ABC" O  / "AB" O /  "BC" X  / "BCD" X  
+         =>  차례대로 배워야함                            ex)  "ABCD" =>  "AB" O / "AC" X  ∴ C를 배우려면 B를 먼저 배워야함
+         =>  선행스킬목록에 없는 스킬들은 자유롭게 배울수있음                      "ABD"  X  
+       
+       ∴ 스킬트리에 선행스킬이 아예 없는경우  + 있다면 배우는 순서가 선행스킬 목록순서와 일치 해야함
+       
+조건 :
+    선행 스킬 순서 skill의 길이는 1 이상 26 이하이며, 스킬은 중복해 주어지지 않습니다.
+    skill_trees는 길이 1 이상 20 이하인 배열입니다.
+    skill_trees의 원소는 길이가 2 이상 26 이하인 문자열이며, 스킬이 중복해 주어지지 않습니다.
+    
+    
+입출력 예
+skill	  |  skill_trees                     	|  return
+"CBD"   |	["BACDE", "CBADF", "AECB", "BDA"] | 	2
+
+
+def solution(skill, skill_trees):
+    ans = 0
+    for tree in skill_trees: # 단순 for loop
+        flag = 1;num=-1
+        for skil in skill:
+            if flag and skil in tree:          # 선행 스킬을 배우고 상급스킬이 배울 경우
+                if num<tree.find(skil):
+                    num = tree.find(skil)
+                else:
+                    flag=-1;break
+            elif not flag and skil in tree:       # 선행 스킬을 배우지 않았는데 상급스킬을 배울 경우
+                flag=-1;break
+            else:                             # 선행 스킬을 배우지 않았고 상급스킬도 배우지 않는 경우
+                flag = 0
+        if flag>=0:
+            ans+=1
+    return ans
+    
+    ##############################################################################
+   
+   (압축형 풀이)
+    def solution(skill,skill_trees):
+    ans = 0
+    for tree in skill_trees:
+        skil_set = ''.join([x for x in tree if x in skill]) # 현재 스킬트리중 선행스킬목록에 있는 스킬만 가져옴
+        if skil_set =='':                             # 만약 스킬이 단 한개도 없다면 배울수 있음
+            ans+=1;continue
+        if skil_set in skill:                         # 가져온 스킬들이 선행스킬목록과 일치한다면 
+            if skil_set[0]==skill[0]:                     # 첫번째부터 연속적으로 일치하는지 검사
+                ans+=1
+    return ans
+    
+    ############################################################################### (정규식 풀이도 가능할것같지만 어렵다)
+    
+  출처 : https://github.com/starpro123/Study_Algorithm/commit/dcef8339072119db6fa640acdf34ffee68ab69e8
+  
+  import collections
+
+  def solution(skill, skill_trees):       # 덱을 활용한 풀이
+      answer = len(skill_trees)
+      for skill_tree in skill_trees:          # 배울 스킬트리를 하나씩 꺼냄 (1) 
+          skill_q = collections.deque(skill)  # 선행스킬목록을 덱에 담음(2)
+          for pre_skill in skill_tree:        # 하나씩 꺼낸 스킬트리(1)중 스킬들을 차례대로 하나씩 꺼냄(3)
+              if len(skill_q) == 0:           # 덱에 담은 선행스킬들이(2) 존재하지 않는다면 종료 
+                  break
+              if pre_skill in skill_q and pre_skill != skill_q.popleft(): #하나씩 꺼낸 스킬들이(3) 선행스킬목록(2)에 있고
+                  answer -= 1                                             # 그 스킬이(3) 선행스킬목록의 첫번째요소와 같다면
+                  break                                                    # 배울수있는 스킬트리 체크
+      return answer            
+           
+           * popleft => deque 함수의 특수기능 (현재 리스트의 왼쪽 요소를 꺼냄(=리스트에서 삭제) 꺼냄과 동시에 값을 가지며 
+                                                        변수에 담지 않으면 값이 사라짐
+      
+      
