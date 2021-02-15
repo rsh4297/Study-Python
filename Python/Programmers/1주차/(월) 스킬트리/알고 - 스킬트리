@@ -1,0 +1,18 @@
+"def solution(skill, skill_trees):
+    answer = 0
+    sk = list(skill) #선행순서 문자열을 리스트로 바꾸기 위한 임의의 리스트
+    for i in skill_trees:
+        value = [] #후에 sk와 비교하여 비교
+        for j in range(len(i)):
+            if i[j] in sk: #선행스킬 목록에 들어가 있는 스킬은 value 리스트에 저장
+                value.append(i[j])
+        if not value: #리스트가 비었을경우 스킬트리가 사용가능하기 때문에 +1
+            answer +=1
+        for j in range(len(value)):
+            if sk[j] == value[j]: # 스킬트리 순서가 정확한지 비교하기 위해 사용
+                if j == len(value) -1: # value의 현재 인덱스가 마지막 인덱스 일 경우
+                    answer += 1
+            else: # 스킬트리 순서가 다른경우 바로 for문을 나와 바로 바깥 포문으로 이동
+                break
+    return answer
+"
