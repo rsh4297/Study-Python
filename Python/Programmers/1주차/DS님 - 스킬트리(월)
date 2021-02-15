@@ -1,0 +1,42 @@
+skill = "CBD"
+skill_trees = ["BACDE", "CBADF", "AECB", "BDA"]
+
+
+def solution(skill, skill_trees):
+    answer = 0
+        
+    skill = list(skill)
+    
+    for enum, a in enumerate(skill_trees):
+        print('#enum:{} , '.format(enum), a)
+        have_skill = []
+        
+        # skill_tree value를 쪼개기 => s
+        s = list(a)
+        
+        
+        #다른스킬들 제거해도됨. 선행스킬 필요한것만 활용
+        include_skill = [i for i in s if i in list(skill)]
+        
+        
+        #모두 pop될때까지 Loop
+        for i in range(len(include_skill)):
+        
+            pop_value = include_skill.pop(0)
+            
+            #한개씩 빼고, 다음 스킬들이 선행스킬조건 충족했는지 확인
+            next_skill = include_skill
+            pre_skill = skill[: skill.index(pop_value)]
+
+            # 선행스킬 만족했는지 확인 후 , 만족하면 skill_have append
+            
+            # 고정적인 skill트리의 pop_value 앞의 놈들이 이미 have_skill에 있는지 확인
+            if set(pre_skill).issubset(have_skill):
+                have_skill.append(pop_value)
+            
+        
+        if have_skill == [i for i in s if i in list(skill)]:
+            print(a, have_skill)
+            answer += 1
+        
+    return answer
