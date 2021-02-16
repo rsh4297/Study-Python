@@ -44,7 +44,7 @@ def solution(skill, skill_trees):
         if skil_set =='':                             # 만약 스킬이 단 한개도 없다면 배울수 있음
             ans+=1;continue
         if skil_set in skill:                         # 가져온 스킬들이 선행스킬목록과 일치한다면 
-            if skil_set[0]==skill[0]:                     # 첫번째부터 연속적으로 일치하는지 검사
+            if skil_set[0]==skill[:n]:                     # 첫번째부터 연속적으로 일치하는지 검사
                 ans+=1
     return ans
     
