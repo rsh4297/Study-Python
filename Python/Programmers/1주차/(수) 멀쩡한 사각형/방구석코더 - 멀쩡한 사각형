@@ -1,0 +1,29 @@
+알고리즘 : 짝 x 짝  = 짝     N x N = N
+           홀 x 짝  = 짝     N x 2N = 2N 
+           홀 x 홀  = 홀     ...         => 배수 관계일때는 큰 수를 취함    == >
+                  => 서로소 관계일때는  A x B =  A+B-1    (A,B는 서로소)   == >    공약수,공배수 관계 유추 => 맞음
+            
+           
+ 조건 : W,H : 1억 이하의 자연수
+ 
+ 입출력 예
+W	|  H	| result
+8	   12	    80
+
+
+def solution(w,h):
+    def gcd(a,b):
+        return gcd(b,a%b) if b else a     => 유클리디안
+    if w<h:
+        w,h=h,w                 => 굳이 대소 비교할필요없음 함수내에서 정렬됨
+    if w%h==0:
+        return (w-1)*h
+    elif w%(gcd(w,h))==0 and gcd(w,h)!=1:       => 배수관계일때나 서로소관계일때도 조건만족함
+        return (w*h)-(w+gcd(w,h))
+    else:
+        return w*h-(h+w-gcd(w,h))
+        
+ ================================> 축약
+ def solution(w,h):
+    def gcd(a,b): return gcd(b,a%b) if b else a
+    return w*h-(w+h-gcd(w,h))
