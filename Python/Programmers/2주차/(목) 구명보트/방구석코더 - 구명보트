@@ -1,0 +1,33 @@
+알고리즘 : 최대 2명만 탈 수 있고 무게 제한이 있기때문에
+              같이 탈 수 없는 몸무게를 가진 사람먼저 구출시도 후
+                나머지 구출
+         
+  조건  :  최대 50,000명까지  N^2 은 통과할 수 없음 
+           후위 부터 전위를 비교하며 탐색
+        
+ def solution(people,limit):
+    people.sort()
+    cnt = 0
+    while people:
+        P = people.pop()
+        flag=0
+        for i,x in enumerate(people):
+            if x>limit-P:break
+            flag=1
+        if flag:
+            people.pop(i-1)
+        cnt+=1
+    return cnt
+    ########################################### 효율성 테스트에서 1,2,3 실패 (시간초과)
+ 앞,뒤 말단을 비교하는것으로 deque가 적합
+ 
+from collections import deque                 
+def solution(people,limit):
+    q = deque(sorted(people))
+    cnt = 0
+    while q:
+        if len(q)>1 and q[0]+q[-1]<=limit:
+            q.popleft();q.pop();cnt+=1
+        else: q.pop();cnt+=1;
+    return cnt
+ 
