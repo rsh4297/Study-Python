@@ -1,0 +1,32 @@
+
+
+
+from collections import Counter
+def solution(N,stages):
+    a = Counter(stages)
+    stage = [[i,a[i]] if i in a else[i,0] for i in range(1,N+2)]
+    stage.pop()
+    k = len(stages)
+    def sol(x):
+        nonlocal k
+        ans =x[1]/k;k-=x[1]
+        return ans
+    stage = sorted(stage,key=lambda x:sol(x),reverse=True)
+    return [x for i,x in enumerate(sum(stage,[])) if not i%2] 
+    
+    
+    ##### 런타임 에러    [라이브러리 사용 X ]
+    
+    
+def solution(N, stages):
+    fail = {}
+    for i in range(1,N+1):
+        try:
+            fail_ = len([a for a in stages if a==i])/len([a for a in stages if a>=i])
+        except:
+            fail_ = 0
+        fail[i]=fail_
+    answer = sorted(fail, key=fail.get, reverse=True)
+    return answer
+    
+    
