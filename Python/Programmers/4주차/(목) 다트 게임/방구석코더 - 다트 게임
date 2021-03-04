@@ -1,0 +1,31 @@
+def solution(dartResult):
+    dartResult = dartResult.replace('10','X')
+    digit = []
+    alpha = []
+    subt = [1]*len(dartResult)
+    cnt = 0
+    
+    for x in dartResult:
+        if x == 'X':
+            digit.append(10)
+            continue
+        if x.isdigit():
+            digit.append(int(x))
+        elif x.isalpha():
+            alpha.append(x)
+            cnt+=1
+        else:
+            if x=='*':
+                subt[cnt-1]=2
+                subt[cnt-2]*=2
+            else:
+                subt[cnt-1]=-1
+    sub = 0
+    for i in range(len(digit)):
+        if alpha[i]=='D':
+            digit[i]*=digit[i]
+        if alpha[i]=='T':
+            digit[i]= digit[i]**3
+        print(digit[i],alpha[i],subt[i])
+        sub+=digit[i]*subt[i]
+    return sub
